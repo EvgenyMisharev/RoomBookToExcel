@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RoomBookToExcel"
              mc:Ignorable="d" 
-             Title="RoomBook в Excel" Height="260" Width="300" 
-             MinHeight="260" MinWidth="300" MaxHeight="260" MaxWidth="300"
+             Title="RoomBook в Excel" Height="260" Width="320" 
+             MinHeight="260" MinWidth="320" MaxHeight="260" MaxWidth="320"
              WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" KeyDown="RoomBookToExcelWPF_KeyDown">
     <Grid>
         <GroupBox x:Name="groupBox_ExportOption" Header="Вариант экспорта:" Margin="10,10,10,50">

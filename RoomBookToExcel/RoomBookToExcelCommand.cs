@@ -577,7 +577,7 @@ namespace RoomBookToExcel
                         for (int i = 3; i <= itemDataCnt + 2; i += 2)
                         {
                             // вписываем текст
-                            worksheet.Cells[3, i].Value = $"Отделка стен тип {typeCnt}";
+                            worksheet.Cells[3, i].Value = $"Отделка пола тип {typeCnt}";
                             worksheet.Cells[3, i + 1].Value = "Площ. м2";
                             typeCnt++;
                         }
@@ -1199,7 +1199,7 @@ namespace RoomBookToExcel
                         for (int i = 3; i <= itemDataCnt + 2; i += 2)
                         {
                             // вписываем текст
-                            worksheet.Cells[3, i].Value = $"Отделка стен тип {typeCnt}";
+                            worksheet.Cells[3, i].Value = $"Отделка потолка тип {typeCnt}";
                             worksheet.Cells[3, i + 1].Value = "Площ. м2";
                             typeCnt++;
                         }
