@@ -1,0 +1,3 @@
+RoomBook\nв Excel
+Экспорт данных об отделке помещений в Excel таблицу
+https://docs.google.com/document/d/18VzM4A86xsECzhi_VBuSY1pQmem9pnBLZVG6mGn_vSM/edit?usp=sharing
