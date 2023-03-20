@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Title="RoomBook в Excel" Height="260" Width="320" 
              MinHeight="260" MinWidth="320" MaxHeight="260" MaxWidth="320"
-             WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" KeyDown="RoomBookToExcelWPF_KeyDown">
+             WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="Resources/citrus.ico" WindowStartupLocation="CenterScreen" KeyDown="RoomBookToExcelWPF_KeyDown">
     <Grid>
         <GroupBox x:Name="groupBox_ExportOption" Header="Вариант экспорта:" Margin="10,10,10,50">
             <Grid>
@@ -18,9 +18,9 @@
                     <RowDefinition Height="35*"/>
                 </Grid.RowDefinitions>
                 <RadioButton x:Name="rbt_FinishingForEachRoom" Content="Отделка по каждому помещению" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" IsChecked="True"/>
-                <RadioButton x:Name="rbt_FloorFinishByCombinationInRoom" Content="Отделка пола по сочитанию в помещении" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" Grid.Row="1"/>
-                <RadioButton x:Name="rbt_WallFinishByCombinationInRoom" Content="Отделка стен по сочитанию в помещении" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" Grid.Row="2"/>
-                <RadioButton x:Name="rbt_CeilingFinishByCombinationInRoom" Content="Потолки по сочитанию в омещении" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" Grid.Row="3"/>
+                <RadioButton x:Name="rbt_FloorFinishByCombinationInRoom" Content="Отделка пола по сочетанию в помещении" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" Grid.Row="1"/>
+                <RadioButton x:Name="rbt_WallFinishByCombinationInRoom" Content="Отделка стен по сочетанию в помещении" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" Grid.Row="2"/>
+                <RadioButton x:Name="rbt_CeilingFinishByCombinationInRoom" Content="Потолки по сочетанию в помещении" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Center" Grid.Row="3"/>
             </Grid>
         </GroupBox>
         
