@@ -1,11 +1,12 @@
 ﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
 using Autodesk.Revit.DB.Architecture;
+using Autodesk.Revit.UI;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using OfficeOpenXml;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 namespace RoomBookToExcel
@@ -16,6 +17,12 @@ namespace RoomBookToExcel
         RoomBookToExcelProgressBarWPF roomBookToExcelProgressBarWPF;
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+            try
+            {
+                GetPluginStartInfo();
+            }
+            catch { }
+
             Document doc = commandData.Application.ActiveUIDocument.Document;
             Guid roombookRoomNumber = new Guid("22868552-0e64-49b2-b8d9-9a2534bf0e14");
             Guid roombookRoomName = new Guid("b59a22a9-7890-45bd-9f93-a186341eef58");
@@ -29,7 +36,7 @@ namespace RoomBookToExcel
                 .Where(r => r.Area > 0)
                 .OrderBy(r => r.Number, new AlphanumComparatorFastString())
                 .ToList();
-            if(roomList.Count == 0)
+            if (roomList.Count == 0)
             {
                 TaskDialog.Show("Revit", "Проект не содержит помещения!");
                 return Result.Cancelled;
@@ -43,7 +50,7 @@ namespace RoomBookToExcel
             }
             string exportOptionName = roomBookToExcelWPF.ExportOptionName;
 
-            if(exportOptionName == "rbt_FinishingForEachRoom")
+            if (exportOptionName == "rbt_FinishingForEachRoom")
             {
                 Thread newWindowThread = new Thread(new ThreadStart(ThreadStartingPoint));
                 newWindowThread.SetApartmentState(ApartmentState.STA);
@@ -205,7 +212,7 @@ namespace RoomBookToExcel
 #if R2019 || R2020 || R2021
                                     floorArea += UnitUtils.ConvertFromInternalUnits(floor.get_Parameter(BuiltInParameter.HOST_AREA_COMPUTED).AsDouble(), DisplayUnitType.DUT_SQUARE_METERS);
 #else
-                            floorArea += UnitUtils.ConvertFromInternalUnits(floor.get_Parameter(BuiltInParameter.HOST_AREA_COMPUTED).AsDouble(), UnitTypeId.SquareMeters);
+                                    floorArea += UnitUtils.ConvertFromInternalUnits(floor.get_Parameter(BuiltInParameter.HOST_AREA_COMPUTED).AsDouble(), UnitTypeId.SquareMeters);
 #endif
                                 }
                                 floorItemForExcelString.ItemArea = Math.Round(floorArea, 2);
@@ -666,7 +673,7 @@ namespace RoomBookToExcel
                     return Result.Cancelled;
                 }
             }
-            else if(exportOptionName == "rbt_WallFinishByCombinationInRoom")
+            else if (exportOptionName == "rbt_WallFinishByCombinationInRoom")
             {
                 Thread newWindowThread = new Thread(new ThreadStart(ThreadStartingPoint));
                 newWindowThread.SetApartmentState(ApartmentState.STA);
@@ -828,10 +835,10 @@ namespace RoomBookToExcel
                         // задаем ширину столбцов
                         worksheet.Column(1).Width = 60;
                         worksheet.Column(2).Width = 120;
-                        for (int i = 3; i <= itemDataCnt + 2; i+=2)
+                        for (int i = 3; i <= itemDataCnt + 2; i += 2)
                         {
                             worksheet.Column(i).Width = 65;
-                            worksheet.Column(i+1).Width = 15;
+                            worksheet.Column(i + 1).Width = 15;
                         }
 
                         worksheet.Column(itemDataCnt + 3).Width = 20;
@@ -949,7 +956,7 @@ namespace RoomBookToExcel
                         worksheet.Cells[2, 1, 3, itemDataCnt + 3].Style.Border.Left.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                         worksheet.Cells[2, 1, 3, itemDataCnt + 3].Style.Border.Right.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
                         worksheet.Cells[2, 1, 3, itemDataCnt + 3].Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
-                        
+
                         // сохраняем пакет Excel
                         System.Windows.Forms.SaveFileDialog saveDialog = new System.Windows.Forms.SaveFileDialog();
                         saveDialog.Filter = "Excel files (*.xlsx)|*.xlsx";
@@ -962,7 +969,7 @@ namespace RoomBookToExcel
                             File.WriteAllBytes(excelFilePath, excelFile);
                         }
                     }
-  
+
                 }
                 catch (Exception theException)
                 {
@@ -1296,6 +1303,26 @@ namespace RoomBookToExcel
             roomBookToExcelProgressBarWPF.Show();
             System.Windows.Threading.Dispatcher.Run();
         }
+        private static void GetPluginStartInfo()
+        {
+            // Получаем сборку, в которой выполняется текущий код
+            Assembly thisAssembly = Assembly.GetExecutingAssembly();
+            string assemblyName = "RoomBookToExcel";
+            string assemblyNameRus = "RoomBook в Excel";
+            string assemblyFolderPath = Path.GetDirectoryName(thisAssembly.Location);
 
+            int lastBackslashIndex = assemblyFolderPath.LastIndexOf("\\");
+            string dllPath = assemblyFolderPath.Substring(0, lastBackslashIndex + 1) + "PluginInfoCollector\\PluginInfoCollector.dll";
+
+            Assembly assembly = Assembly.LoadFrom(dllPath);
+            Type type = assembly.GetType("PluginInfoCollector.InfoCollector");
+            var constructor = type.GetConstructor(new Type[] { typeof(string), typeof(string) });
+
+            if (type != null)
+            {
+                // Создание экземпляра класса
+                object instance = Activator.CreateInstance(type, new object[] { assemblyName, assemblyNameRus });
+            }
+        }
     }
 }
